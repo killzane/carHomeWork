@@ -13,7 +13,7 @@ var tour = new Tour({
 
 $(document).ready(function() {
 	$('#get-json').on('click', function () {
-		$.getJSON("http://www.json-generator.com/api/json/get/ccStEUmUzm?indent=2")
+		$.getJSON("http://www.json-generator.com/api/json/get/bHnLgmFweq?indent=2")
 		.done(function(data) {
 			console.log("load success");
 			$('.items-wrapper').empty();
