@@ -11,21 +11,57 @@ var tour = new Tour({
 	]
 });
 
+// init google chart
+// Load the Visualization API and the corechart package.
+google.charts.load('current', {'packages':['corechart']});
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart(idx, priceHistory){
+	// Create the data table.
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', '月份');
+	data.addColumn('number', '價格');
+	
+	data.addRows(priceHistory);
+	
+	// Set chart options
+	var options = {
+		title: '歷史價格',
+		legend: { position: 'bottom' }
+	};
+	
+	var chart = new google.visualization.LineChart(document.getElementById('chart'+idx));
+	
+	chart.draw(data, options);
+}
+
 $(document).ready(function() {
 	$('#get-json').on('click', function () {
-		$.getJSON("http://www.json-generator.com/api/json/get/bHnLgmFweq?indent=2")
+		$.getJSON("http://www.json-generator.com/api/json/get/cjRjLrFgRK?indent=2")
 		.done(function(data) {
 			console.log("load success");
 			$('.items-wrapper').empty();
-			console.log(data);
 			$.each( data, function( i, item ) {
 				$("<div>").addClass("col-xs-12 col-sm-6 col-md-4 item-block item-block"+i).appendTo(".items-wrapper");
 				$("<img>").attr( "src", item.picture ).appendTo( ".item-block"+i );
 				$("<p>").html( item.name ).appendTo( ".item-block"+i );
 				$("<p>").html( item.price ).appendTo( ".item-block"+i );
+				$("<div>").html("歷史紀錄").addClass("btn btn-default show-chart").appendTo( ".item-block"+i );
+				$("<div>").attr('id', 'chart'+i).addClass("chart-wrapper").css({"display":"none"}).appendTo( ".item-block"+i );
+				var priceHistory = new Array();
+				$.each(item.historys, function(idx, monthPrice) {
+					priceHistory.push([ (monthPrice.month+1) + '月', monthPrice.price]);
+				});
+				drawChart(i, priceHistory);
 				console.log(i);
 			});
 		});
+	});
+	$('body').on('click', '.show-chart', function() {
+		console.log("click");
+		$(this).next().slideToggle();
 	});
 	$('#test-tour').on('click', function() {
 		tour.init(true);
