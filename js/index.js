@@ -28,6 +28,7 @@ $(document).ready(function() {
 		});
 	});
 	$('#test-tour').on('click', function() {
+		tour.init(true);
 		tour.start(true);
 	});
 	tour.init();
