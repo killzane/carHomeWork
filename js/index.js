@@ -11,10 +11,6 @@ var tour = new Tour({
 	]
 });
 
-// Initialize the tour
-tour.init();
-tour.start();
-
 $(document).ready(function() {
 	$('#get-json').on('click', function () {
 		$.getJSON("http://www.json-generator.com/api/json/get/ccStEUmUzm?indent=2")
@@ -34,4 +30,6 @@ $(document).ready(function() {
 	$('#test-tour').on('click', function() {
 		tour.start(true);
 	});
+	tour.init();
+	tour.start();
 });
