@@ -3,8 +3,8 @@ var tour = new Tour({
 	steps: [
 		{
 			element: "#get-json",
-			title: "Title of my step",
-			content: "Content of my step",
+			title: "第一步",
+			content: "點我抓取商品資料",
 			placement: "bottom",
 			backdrop: true
 		}
