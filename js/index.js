@@ -28,6 +28,7 @@ function drawChart(idx, priceHistory){
 	
 	// Set chart options
 	var options = {
+		height: 300,
 		title: '歷史價格',
 		legend: { position: 'bottom' }
 	};
@@ -49,7 +50,8 @@ $(document).ready(function() {
 				$("<p>").html( item.name ).appendTo( ".item-block"+i );
 				$("<p>").html( item.price ).appendTo( ".item-block"+i );
 				$("<div>").html("歷史紀錄").addClass("btn btn-default show-chart").appendTo( ".item-block"+i );
-				$("<div>").attr('id', 'chart'+i).addClass("chart-wrapper").css({"display":"none"}).appendTo( ".item-block"+i );
+				tmp = $("<div>").addClass("row chart-wrapper").appendTo(".item-block"+i);
+				$("<div>").attr('id', 'chart'+i).addClass("col-xs-12").html("123").appendTo(tmp);
 				var priceHistory = new Array();
 				$.each(item.historys, function(idx, monthPrice) {
 					priceHistory.push([ (monthPrice.month+1) + '月', monthPrice.price]);
@@ -57,6 +59,7 @@ $(document).ready(function() {
 				drawChart(i, priceHistory);
 				console.log(i);
 			});
+			$('.chart-wrapper').hide();
 		});
 	});
 	$('body').on('click', '.show-chart', function() {
