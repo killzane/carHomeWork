@@ -11,31 +11,26 @@ var tour = new Tour({
 	]
 });
 
-// init google chart
-// Load the Visualization API and the corechart package.
-google.charts.load('current', {'packages':['corechart']});
-
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawChart);
-
-function drawChart(idx, priceHistory){
-	// Create the data table.
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', '月份');
-	data.addColumn('number', '價格');
-	
-	data.addRows(priceHistory);
-	
-	// Set chart options
-	var options = {
-		height: 300,
-		title: '歷史價格',
-		legend: { position: 'bottom' }
-	};
-	
-	var chart = new google.visualization.LineChart(document.getElementById('chart'+idx));
-	
-	chart.draw(data, options);
+function drawChart(chartArea, priceHistory) {
+	chartArea.CanvasJSChart({
+		title: {
+			text: "歷史紀錄"
+		},
+		axisY: {
+			title: "價格",
+			includeZero: false
+		},
+		axisX: {
+			interval: 1
+		},
+		data: [
+		{
+			type: "line", //try changing to column, area
+			toolTipContent: "{label}: {y} NTD",
+			dataPoints: priceHistory
+		}
+		]
+	});
 }
 
 $(document).ready(function() {
@@ -51,13 +46,13 @@ $(document).ready(function() {
 				$("<p>").html( item.price ).appendTo( ".item-block"+i );
 				$("<div>").html("歷史紀錄").addClass("btn btn-default show-chart").appendTo( ".item-block"+i );
 				tmp = $("<div>").addClass("row chart-wrapper").appendTo(".item-block"+i);
-				$("<div>").attr('id', 'chart'+i).addClass("col-xs-12").html("123").appendTo(tmp);
+				chartArea = $("<div>").attr('id', 'chart'+i).addClass("col-xs-12").appendTo(tmp);
 				var priceHistory = new Array();
 				$.each(item.historys, function(idx, monthPrice) {
-					priceHistory.push([ (monthPrice.month+1) + '月', monthPrice.price]);
+					priceHistory.push({ label: (monthPrice.month+1) + '月',  y: monthPrice.price });
 				});
-				drawChart(i, priceHistory);
-				console.log(i);
+				drawChart(tmp, priceHistory)
+				console.log(priceHistory);
 			});
 			$('.chart-wrapper').hide();
 		});
